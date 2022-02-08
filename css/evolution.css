@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+/* Table evolution*/
+/*start*/
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid black;
+    border-spacing: 10px;
+}
+
+td {
+    padding-left: 35px;
+    padding-right: 35px;
+    height: 50px;
+    border: 3px solid black;
+}
+
+th {
+    border: 3px solid black;
+    padding-left: 35px;
+    padding-right: 35px;
+    height: 50px;
+}
+
+tr:nth-child(even) {
+    background-color: royalblue;
+}
+
+/*end*/
+
+/*Background Blanc*/
+/*start*/
+
+.evolutionContenant {
+    height: fit-content;
+}
+
+/*end*/

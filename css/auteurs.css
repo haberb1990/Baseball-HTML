@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+/*Profil des Élèves*/
+/* start */
+
+.card {
+  box-shadow: 0 4px 8px 0 cornflowerblue;
+  max-width: 450px;
+  margin: auto;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.title {
+  color: #3698d4;
+  font-size: 18px;
+}
+
+/* end */
+
+/*Background Blanc*/
+/*start*/
+
+.auteursContenant {
+  height: 1000px;
+}
+
+/*end*/

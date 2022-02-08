@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+/*Table de classement*/
+/*Start*/
+
+#titre1{
+  font-weight: bold;
+  font-size: medium;
+  text-align: left;
+}
+
+#titre2{
+  font-weight: bold;
+  font-size: medium;
+  text-align: left;
+}
+
+#titre3{
+  font-weight: bold;
+  font-size: medium;
+  text-align: left;
+}
+
+#table {
+  border-collapse: collapse;
+  width: 90%;
+  table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table2 {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table3 {
+  border-collapse: collapse;
+  width: 90%;
+  table-layout: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  background-color: blue;
+  color: white;
+}
+
+.highlight {
+  background-color: #DC143C
+}
+
+caption {
+  font-weight: bold;
+  font-size: medium;
+  text-align: left;
+}
+
+/*end*/
+
+/*Background Blanc*/
+/*start*/
+
+.classementContenant {
+  height: auto;
+}
+
+/*end*/
+
+ tr:hover {
+  color: red;
+} 
+
+.highlight{
+  background-color: red;
+}

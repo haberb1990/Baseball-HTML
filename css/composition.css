@@ -1,0 +1,256 @@
+@charset "UTF-8";
+
+/*Tableau Composition*/
+/*start*/
+
+#table {
+  border-collapse: collapse;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+td {
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 50px;
+  border: 3px solid black;
+}
+
+th {
+  border: 3px solid black;
+  padding-left: 5px;
+  padding-right: 5px;
+  height: 50px;
+}
+
+/*end*/
+
+/*Background Blanc*/
+/*start*/
+
+.compositionContenant {
+  height: fit-content;
+}
+
+/*end*/
+
+/*Attribut*/
+/*start*/
+
+.attribut table {
+  border-collapse: collapse;
+  border: white;
+}
+
+.attribut td {
+  height: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 3px solid white
+}
+
+/*end*/
+
+/*nav bar pour composition*/
+/*start*/
+
+.compnav {
+  background-color: #316f8f;
+  overflow: hidden;
+}
+
+.compnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.compnav a:hover {
+  background-color: red;
+  color: white;
+}
+
+.compnav a.active {
+  background-color: #3698d4;
+  color: white;
+}
+
+/*table joueurs et lanceurs*/
+
+#table {
+  border-collapse: collapse;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+#table th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  background-color: blue; 
+  color: white;
+}
+/*Tables autres*/
+/*start*/
+
+#table1 {
+  border-collapse: collapse;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table1 td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+#table1 th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  background-color: blue; 
+  color: white;
+}
+
+#table2 {
+  border-collapse: collapse;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table2 td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+#table2 th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  background-color: blue; 
+  color: white;
+}
+
+#table3 {
+  border-collapse: collapse;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid black;
+}
+
+#table3 td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+#table3 th {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  background-color: blue; 
+  color: white;
+}
+
+/* #table tr:nth-child(odd) {
+  background-color: blue;
+} */
+
+/*end*/
+
+
+/* statistiques Offensifs*/
+.H{
+  color: red;
+  }
+  
+  .X2B{
+    color: red;
+  }
+  
+  .AB{
+    color: red;
+  }
+  
+  .SB{
+    color: red;
+  }
+  
+  .BA{
+    color: red;
+  }
+  
+  .SL{
+    color: red;
+  }
+  
+  .OB{
+    color: red;
+  }
+  
+  .SO{
+    color: red;
+  }
+  
+  .X3B{
+    color: red;
+  }
+  
+  .HR{
+    color: red;
+  }
+  
+  .BB{
+    color: red;
+  }
+  
+  .R{
+    color: red;
+  }
+  
+  .CS{
+    color: red;
+  }
+  
+  /*Statistiques Deffensifs*/
+  
+  .FP{
+    color: blue;
+  }
+  
+  .A{
+    color: blue;
+  }
+  
+  .E{
+    color: blue;
+  }
+  
+  .POS{
+    color: blue;
+  }
+  
+  .Salaires{
+    color: green;
+  }
+  

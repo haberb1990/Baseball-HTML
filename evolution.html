@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr-ca">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Expos de Montréal</title>
+    <link rel="stylesheet" type="text/css" href="./css/evolution.css">
+    <link rel="stylesheet" type="text/css" href="./css/accueil.css">
+    <!-- Ajouter les scripts -->
+    <script type="text/javascript" src="jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="chart.js"></script>
+
+    <!-- script pour la question 1 -->
+    <script>
+        function genereGrapheBar1(donnees, bchart) {
+            console.log(donnees);
+            var nb = donnees.length;
+            var labelsY = [];
+            var points = [];
+            var differentiel = [];
+            for (var i = 0; i < nb; i++) {
+                labelsY[i] = donnees[i].yearID; //Un label pour chaque année
+                points[i] = donnees[i].Victoires; //les données pour les victoires annuelles.  
+                differentiel[i] = donnees[i].Diff; //les données pour le différentiel.
+            };
+
+            var bckgrdcol = [];
+            var bckDiff = [];
+
+            for (var i = 0; i < nb; i++) {
+                // alterner les couleurs des colonnes pour le bckgrdcol
+                bckgrdcol[i] = ((i % 2) == 0) ? "#3e95cd" : "#c45850";
+                bckDiff[i] = "#d1d1e0";
+            };
+            //graphe colonne chargé avec les données:
+            new Chart($("#" + bchart), {
+                type: 'bar',
+                data: {
+                    labels: labelsY,
+                    datasets: [{
+                            label: "Victoires annuelle",
+                            type: "bar", //le type est colonne.
+                            backgroundColor: bckgrdcol,
+                            data: points // les données pour les victoires annuelles.
+                        },
+                        {
+                            label: "Différence annuelle",
+                            type: "bar", //le type est colonne.
+                            backgroundColor: bckDiff,
+                            data: differentiel // les données pour la différentiel.
+                        },
+                    ]
+                },
+                options: {
+                    //les graphes sont empilés sur l'axe des x et y.
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: true
+                        }]
+                    },
+                    legend: {
+                        display: true // affiche la légende
+                    },
+                    title: {
+                        display: true, //affiche le titre du graphe général.
+                        text: 'Évolution des victoires des Expos'
+                    }
+                }
+            });
+        };
+
+        var postData = {};
+        postData["db"] = "dift6800_baseball";
+        postData["query"] =
+            "T1.yearID as yearID, W As Victoires, maxW-W As Diff From Teams as T1," +
+            " (SELECT yearID, MAX(W) AS maxW From Teams WHERE divID='E' AND lgID = 'NL'" +
+            " GROUP BY yearID HAVING yearID>1968) AS T2 WHERE T1.teamID='MON' AND T1.yearID=T2.yearID"
+        $.post(
+            "http://www-ens.iro.umontreal.ca/~dift6800/baseball/db.php",
+            postData,
+            function (reponse, status) {
+                console.log(status);
+                var obj = JSON.parse(reponse);
+                if (obj.error == "") {
+                    genereGrapheBar1(obj.data, "bar-chart");
+                } else {
+                    alert("Erreur:" + obj.error);
+                }
+            }
+        );
+    </script>
+
+    <!-- script pour la question 2 -->
+    <script>
+        function genereGrapheBar2(donnees, bchart) {
+            console.log(donnees);
+            var nb = donnees.length;
+            var labelsY = [];
+            var points = [];
+            var assMoy = [];
+            for (var i = 0; i < nb; i++) {
+                labelsY[i] = donnees[i].yearID; //Un label pour chaque année
+                points[i] = donnees[i].A; //les données pour l'asssistance aux matchs à Montréal.
+                assMoy[i] = donnees[i].AMoy; //les données pour les assistances moyennes.
+            };
+
+            var bckgrdcol = [];
+            for (var i = 0; i < nb; i++) {
+                bckgrdcol[i] = "#3e95cd";
+            };
+            //graphe colonne chargé avec les données:
+            new Chart($("#" + bchart), {
+                type: 'bar',
+                data: {
+                    labels: labelsY,
+                    datasets: [{
+                            label: "Assistance moyenne, ligue nationale",
+                            type: "line", //le type est ligne.
+                            borderColor: "#c45850", // couleur de la ligne
+                            data: assMoy, //les données pour les assistances moyennes.
+                            fill: false
+                        },
+                        {
+                            label: "Assistance à Montréal",
+                            type: "bar", //le type est colonne.
+                            backgroundColor: bckgrdcol, // couleur des colonnes
+                            data: points //les données pour l'asssistance aux matchs à Montréal.
+                        }
+                    ]
+                },
+                options: {
+                    legend: {
+                        display: true //affiche la légende
+                    },
+                    title: {
+                        display: true, //affiche le titre du graphe général.
+                        text: 'Assistance aux matchs des Expos à Montréal'
+                    }
+                }
+            });
+        };
+
+        var postData = {};
+        postData["db"] = "dift6800_baseball";
+        postData["query"] =
+            "Teams.yearID, attendance AS A, MoyAnn.MoyAssist AS AMoy FROM Teams, (SELECT yearID," +
+            " ROUND(AVG(attendance)) AS MoyAssist FROM Teams WHERE lgID='NL' GROUP BY yearID) AS MoyAnn" +
+            " WHERE Teams.teamID='MON' AND Teams.yearID=MoyAnn.yearID"
+        $.post(
+            "http://www-ens.iro.umontreal.ca/~dift6800/baseball/db.php",
+            postData,
+            function (reponse, status) {
+                console.log(status);
+                var obj = JSON.parse(reponse);
+                if (obj.error == "") {
+                    genereGrapheBar2(obj.data, "bar-chart2");
+                } else {
+                    alert("Erreur:" + obj.error);
+                }
+            }
+        );
+    </script>
+
+    <!-- script pour la question 3 -->
+    <script>
+        function genereGrapheLine(donnees, bchart) {
+            console.log(donnees);
+            var nb = donnees.length;
+            var labelsY = [];
+            var salaires = [];
+            var moy = [];
+            var max = [];
+            for (var i = 0; i < nb; i++) {
+                labelsY[i] = donnees[i].yearID; //Un label pour chaque année
+                salaires[i] = donnees[i].Expos; //les données pour la masse salariale des Expos.
+                moy[i] = donnees[i].MoyNL; //les données pour la moyenne des masses salariales pour la ligue nationale.
+                max[i] = donnees[i].MaxNL; //les données pour la masse salariale maximale dans la ligue nationale.
+            };
+            //graphe ligne chargé avec les données:
+            new Chart($("#" + bchart), {
+                type: 'line',
+                data: {
+                    labels: labelsY,
+                    datasets: [{
+                            label: "masse salariale des Expos",
+                            type: "line", //le type est ligne.
+                            borderColor: "#c45850",
+                            data: salaires, //les données pour la masse salariale des Expos.
+                            fill: false
+                        },
+                        {
+                            label: "moyenne des masses salariales pour la ligue nationale",
+                            type: "line", //le type est ligne.
+                            borderColor: "#20F605",
+                            data: moy, //les données pour la moyenne des masses salariales pour la ligue nationale.
+                            fill: false
+                        },
+                        {
+                            label: "masse salariale maximale dans la ligue nationale",
+                            type: "line", //le type est ligne.
+                            borderColor: "#EF05F6",
+                            data: max, //les données pour la masse salariale maximale dans la ligue nationale.
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    legend: {
+                        display: true //affiche la legende
+                    },
+                    title: {
+                        display: true, //affiche le titre du graphe général.
+                        text: 'Masse Salariale des Expos à Montréal'
+                    }
+                }
+            });
+        };
+
+        var postData = {};
+        postData["db"] = "dift6800_baseball";
+        postData["query"] =
+            "Teams.yearID, SUM(Salaries.salary) AS Expos, Gen.Moy AS MoyNL, Gen.Max AS MaxNL FROM Salaries, Teams," +
+            " (SELECT yearID, ROUND(AVG(MS.MasseSalariale)) AS Moy, MAX(MS.MasseSalariale) AS Max" +
+            " FROM (SELECT Teams.yearID,Teams.teamID, SUM(Salaries.salary) AS MasseSalariale FROM  Salaries, Teams" +
+            " WHERE Salaries.teamID=Teams.teamID AND Teams.yearID=Salaries.yearID AND Teams.lgID='NL'" +
+            " GROUP BY Teams.yearID, Teams.teamID) AS MS GROUP BY yearID) AS Gen" +
+            " WHERE Salaries.teamID=Teams.teamID AND Teams.teamID='MON' AND Teams.yearID=Salaries.yearID AND" +
+            " Gen.yearID=Teams.yearID GROUP BY Teams.yearID"
+        $.post(
+            "http://www-ens.iro.umontreal.ca/~dift6800/baseball/db.php",
+            postData,
+            function (reponse, status) {
+                console.log(status);
+                var obj = JSON.parse(reponse);
+                if (obj.error == "") {
+                    genereGrapheLine(obj.data, "line-chart");
+                } else {
+                    alert("Erreur:" + obj.error);
+                }
+            }
+        );
+    </script>
+
+    <!-- script pour la question 4 -->
+    <script>
+        // Indique si une tarte est déja sur la page. Lorsque c'est le cas alors on fait destroy() avant d'afficher.
+        var unetarte = false;
+        // Tableau des équipes de la division EST et la ligue nationale
+        var equipes = ['MON', 'CHN', 'NYN', 'PHI', 'PIT', 'SLN', 'MIA', 'FLO', 'WAS', 'ATL'];
+        // Tableau des couleurs associées à chacune des équipes
+        var couleurs = ['#3e95cd', '#6600cc', '#009933', '#cc0000', '#cc9900', '#cc6699',
+            '#999966', '#6699ff', '#009999', '#666699'
+        ];
+        //Génère la tarte définie par les données.
+        function genereTarte(donnees, pchart, annee) {
+            var nb = donnees.length;
+            var labelsY = [];
+            var vals = [];
+            var lescols = [];
+            if (nb > 0) {
+                for (var i = 0; i < nb; i++) {
+                    labelsY[i] = donnees[i].teamID; //Un label par équipe
+                    vals[i] = donnees[i].masse; //masse salariale l'équipe
+                    lescols[i] = couleurs[equipes.indexOf(labelsY[i])];
+                    /* Associe la couleur à l'équipe courante.Il s'agit de l'entrée correspondante à l'équipe
+                     * courante dans le tableau de couleurs couleurs[.].
+                     */
+                };
+                //s'il y a déjà une tarte alors la détruire. unetarte=false, car il n'y a plus de tarte.
+                if (unetarte) {
+                    latarte.destroy();
+                    unetarte = false;
+                }
+
+                //tarte chargé avec les données:
+                latarte = new Chart($('#' + pchart), {
+                    type: 'pie',
+                    data: {
+                        labels: labelsY,
+                        //Les données et leurs couleurs respectives.
+                        datasets: [{
+                            label: "masse salariale",
+                            backgroundColor: lescols,
+                            data: vals
+                        }]
+                    },
+                    options: {
+                        title: {
+                            //Affiche le titre.
+                            display: true,
+                            //Le titre du graphe.
+                            text: 'Masse salariale de chaque équipe en ' + annee
+                        }
+                    }
+                });
+                unetarte = true; //Il y a maintenant une tarte affichée.
+            }
+        }
+
+        function requeteTarte() {
+            var annee = $('#annees').val();
+            var postReq = {};
+            postReq["db"] = "dift6800_baseball";
+            //La requête pour l'année selectionnée par l'usager.
+            postReq["query"] = "Teams.teamID, SUM(Salaries.salary) AS masse" +
+                " FROM Salaries, Teams WHERE Salaries.teamID=Teams.teamID AND" +
+                " Teams.yearID=Salaries.yearID AND Teams.divID='E' AND Teams.lgID='NL' AND Teams.yearID=" +
+                annee + " GROUP BY Teams.yearID, Teams.teamID;";
+            $.post(
+                "http://www-ens.iro.umontreal.ca/~dift6800/baseball/db.php",
+                postReq,
+                function (reponse, status) {
+                    console.log(status);
+                    var obj = JSON.parse(reponse);
+                    if (obj.error == "") {
+                        genereTarte(obj.data, "pie-chart", annee);
+                    } else {
+                        alert("Erreur:" + obj.error);
+                    }
+                }
+            );
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="contenant" class="evolutionContenant">
+        <img class="logo" src="./image/Logo4.png" alt="Logo de Montreal Expos">
+        <div class="row">
+            <div>
+                <img class="logotop" src="./image/logotop.png" alt="Logo">
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="accueil.html">Accueil</a>
+            <a href="composition.html">Composition</a>
+            <a href="classement.html">Classement</a>
+            <a class="active" href="evolution.html">Évolution</a>
+            <a href="auteurs.html">Auteurs</a>
+        </nav>
+        <div>
+            <!-- question 1 -->
+            <h2>Le nombre de victoires des Expos au cours de son histoire</h2>
+            <canvas id="bar-chart" width="800" height="450"></canvas>
+            <!-- question 2 -->
+            <h2>L'assistance aux matchs des Expos pour chacune de ses années d'existence</h2>
+            <canvas id="bar-chart2" width="800" height="450"></canvas>
+            <!-- question 3 -->
+            <h2>L'évolution de la masse salariale des Expos au cours de son histoire</h2>
+            <canvas id="line-chart" width="800" height="450"></canvas>
+            <br>
+            <p><small>Note: La masse salariale n'est documentée qu'à partir de 1985.</small></p>
+            <!-- question 4 -->
+            <h2>La masse salariale de chaque équipe de la division des Expos au cours de son histoire</h2>
+            <p>Choisissez une année pour voir la masse salariale de chaque équipe dans la même division des Expos</p>
+            <br>
+            <label for="annees">Choisir une année:</label>
+            <select id="annees" name="annee">
+            </select>
+            <!-- script pour créer le select option pour permettre à l'usager de faire un choix -->
+            <script>
+                var v = "";
+                for (var i = 1985; i <= 2004; i++) {
+                    v = v + "<option value='" + i + "'>" + i + "</option>";
+                }
+                $("#annees").html(v); //place les options dans le selecteur.
+            </script>
+            <input type="button" value="Dessiner" onclick="requeteTarte()">
+            <br>
+            <canvas style="padding-top: 50px" id="pie-chart" width="500" height="200"></canvas>
+        </div>
+    </div>
+</body>
+
+</html>
